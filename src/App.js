@@ -43,11 +43,31 @@ class App extends Component {
       'm': { id: 'm', title: 'Thirteenth card', content: 'lorem ipsum' },
     },
   }
+
+  newRandomCard = () => {
+    const id = Math.random().toString(36).substring(2, 4)
+      + Math.random().toString(36).substring(2, 4);
+    return {
+      id,
+      title: `Random Card ${id}`,
+      content: 'lorem ipsum',
+    }
+  }
   
 
-  deleteCardButtonMethod = () => {console.log('delete button pressed')}
+  deleteCard = () => {console.log('delete button pressed')}
   
-  generateRandomCardButtonMethod = () => {console.log('random button pressed')}
+  generateRandomCard = () => {
+    const newCard = this.newRandomCard();
+    const newAllCards = {
+      ...this.state.allCards,
+       [newCard.id]: newCard
+    }
+
+    this.setState({
+      allCards: newAllCards,
+    })
+    console.log(this.state.allCards)}
 
   // static defaultProps = {
   //   store: {
@@ -67,8 +87,11 @@ class App extends Component {
           {this.state.lists.map(list => (
             <List
               key={list.id}
+              id={list.id}
               header={list.header}
               cards={list.cardIds.map(id => this.state.allCards[id])}
+              onDeleteItem={this.deleteCard}
+              onAddRandom={this.generateRandomCard}
             />
           ))}
         </div>
