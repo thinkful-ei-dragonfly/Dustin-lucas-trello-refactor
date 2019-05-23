@@ -57,17 +57,29 @@ class App extends Component {
 
   deleteCard = () => {console.log('delete button pressed')}
   
-  generateRandomCard = () => {
+  generateRandomCard = (e) => {
     const newCard = this.newRandomCard();
     const newAllCards = {
       ...this.state.allCards,
        [newCard.id]: newCard
     }
 
+    const listId = e.target.getAttribute('listid');
+
+    const ourList = this.state.lists.filter(list => list.id===listId)
+
+    const newList = {
+      id: ourList.id,
+      header: ourList.header,
+      cardIds: [...ourList.cardIds, newCard.id]
+    }
+
+
     this.setState({
       allCards: newAllCards,
+      lists: [...this.state.lists]
     })
-    console.log(this.state.allCards)}
+    console.log(listId)}
 
   // static defaultProps = {
   //   store: {
