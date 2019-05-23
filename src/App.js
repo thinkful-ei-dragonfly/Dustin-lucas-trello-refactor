@@ -3,7 +3,7 @@ import List from './List'
 import './App.css';
 
 class App extends Component {
-  
+
   state = {
     lists: [
       {
@@ -53,10 +53,10 @@ class App extends Component {
       content: 'lorem ipsum',
     }
   }
-  
+
 
   deleteCard = () => {console.log('delete button pressed')}
-  
+
   generateRandomCard = (e) => {
     const newCard = this.newRandomCard();
     const newAllCards = {
@@ -68,7 +68,7 @@ class App extends Component {
 
     const ourList = this.state.lists.find(list => list.id===listId)
 
-   
+
 
     const newList = {
       id: ourList.id,
@@ -76,14 +76,18 @@ class App extends Component {
       cardIds: [...ourList.cardIds, newCard.id]
     }
 
-    const newStateLists = this.state.lists.filter(list => list.id !== listId);
-    // console.log(newStateLists);
+    const newStateLists = this.state.lists.map(list => {
+      if (list.id === newList.id) {
+        return newList;
+      }
+      return list;
+    })
 
     this.setState({
       allCards: newAllCards,
-      lists: [...newStateLists, newList]
+      lists: newStateLists
     })
-    // console.log(listId)
+
   }
 
   // static defaultProps = {
