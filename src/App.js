@@ -66,6 +66,8 @@ class App extends Component {
     const newListObject = this.state.lists.find(list => list.id === listId);
     const newCardIds = newListObject.cardIds.filter(id => id !== cardId);
     newListObject.cardIds = newCardIds;
+    // We were deleting these cards on a one-by-one basis
+    // However the requirements want us to delete ALL instances of the card in all lists
     const newLists = this.state.lists.map(list => {
       if (list.id === newListObject.id) {
         return newListObject
