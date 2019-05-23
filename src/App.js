@@ -66,7 +66,9 @@ class App extends Component {
 
     const listId = e.target.getAttribute('listid');
 
-    const ourList = this.state.lists.filter(list => list.id===listId)
+    const ourList = this.state.lists.find(list => list.id===listId)
+
+   
 
     const newList = {
       id: ourList.id,
@@ -74,12 +76,15 @@ class App extends Component {
       cardIds: [...ourList.cardIds, newCard.id]
     }
 
+    const newStateLists = this.state.lists.filter(list => list.id !== listId);
+    // console.log(newStateLists);
 
     this.setState({
       allCards: newAllCards,
-      lists: [...this.state.lists]
+      lists: [...newStateLists, newList]
     })
-    console.log(listId)}
+    // console.log(listId)
+  }
 
   // static defaultProps = {
   //   store: {
