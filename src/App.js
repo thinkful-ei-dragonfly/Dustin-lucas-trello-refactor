@@ -54,17 +54,48 @@ class App extends Component {
     }
   }
 
+  deleteCard = (cardId, listId) => {
+    function omit(obj, keyToOmit) {
+      return Object.entries(obj).reduce(
+        (newObj, [key, value]) =>
+            key === keyToOmit ? newObj : {...newObj, [key]: value},
+        {}
+      );
+    }
+    let newAllCards = {...this.state.allCards};
+    const newListObject = this.state.lists.find(list => list.id === listId);
+    const newCardIds = newListObject.cardIds.filter(id => id !== cardId);
+    newListObject.cardIds = newCardIds;
+    const newLists = this.state.lists.map(list => {
+      if (list.id === newListObject.id) {
+        return newListObject
+      }
+      return list
+    })
 
-  deleteCard = () => {console.log('delete button pressed')}
+    const newNewLists = newLists.map(list => {
+      return list.cardIds
+    }).flat(1)
 
-  generateRandomCard = (e) => {
+    if (!newNewLists.includes(cardId)) {
+      // if the cardId is no longer found in any of the lists
+      // of this.state.lists then we'll remove that reference from
+      // this.state.allCards
+      newAllCards = omit(this.state.allCards, cardId)
+    }
+
+    this.setState({
+      lists: newLists,
+      allCards: newAllCards
+    })
+  }
+
+  generateRandomCard = (listId) => {
     const newCard = this.newRandomCard();
     const newAllCards = {
       ...this.state.allCards,
        [newCard.id]: newCard
     }
-
-    const listId = e.target.getAttribute('listid');
 
     const ourList = this.state.lists.find(list => list.id===listId)
 
